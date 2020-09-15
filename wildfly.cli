@@ -1,0 +1,18 @@
+# ./jboss-cli.sh --connect --file=/sciezka/do/pliku/wildfly.cli
+
+# Połączenie z bazą danych
+if (outcome != success) of /subsystem=datasources/data-source=products:read-resource
+    data-source add \
+         --name=products \
+         --driver-name=h2 \
+         --driver-class=org.h2.Driver \
+         --connection-url=jdbc:h2:mem:test;DB_CLOSE_DELAY=-1 \
+         --jndi-name=java:/products \
+         --user-name=sa \
+         --password=sa \
+
+    data-source enable --name=products
+end-if
+
+# Załadowanie nowej konfiguracji w uruchomionym serwerze
+reload
